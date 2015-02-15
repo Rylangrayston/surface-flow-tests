@@ -1,12 +1,16 @@
+scaleFactor = 1;
+
 resolution = 25 ;
 
-holeSpaceing = .3;
+holeHeight = .15;
 
-segmentSize = holeSpaceing * 10;
+holeSpaceing = .15;
+
+segmentSize = holeSpaceing * 20 * scaleFactor;
 
 roundingError  = .04;
 
-module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulumGap = 1, wallThickness  = 1, bottomRadius = 10, topRadius = 9
+module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulumGap = 1, wallThickness  = .2, bottomRadius = 10, topRadius = 9
 ){
     holeWidth = (bottomRadius+ topRadius)/6;
     union(){
@@ -45,8 +49,8 @@ points = [4,4,1,1.8,3,6,12,15,16,16,15,13,8,4,2,1,1];
 
 for (i = [0:1:len(points) -2]) {
    translate([0,0,segmentSize  * i  ])
-   coulum(bottomRadius = points[i], topRadius = points[i +1] );
-    echo(i);
+   coulum(bottomRadius = points[i] * scaleFactor, topRadius = points[i +1] * scaleFactor, holeSpaceing = holeSpaceing, holeHeight = holeHeight );
+    //echo(i);
 }
     
    
