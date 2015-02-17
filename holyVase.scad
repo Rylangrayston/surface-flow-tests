@@ -2,18 +2,18 @@ scaleFactor = 1;
 
 resolution = 25 ;
 
-holeHeight = .15;
+holeHeight = .35;
 
-holeSpaceing = .15;
+holeSpaceing = .35;
 
-segmentSize = holeSpaceing * 20 * scaleFactor;
+segmentSize = holeSpaceing * 10 * scaleFactor;
 
 roundingError  = .04;
 
-module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulumGap = 1, wallThickness  = .2, bottomRadius = 10, topRadius = 9
+module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulumGap = 1, wallThickness  = .05, bottomRadius = 10, topRadius = 9
 ){
     holeWidth = (bottomRadius+ topRadius)/6;
-    union(){
+    
     difference(){
         translate([0,0,0])
         cylinder(h = height, r1 = bottomRadius, r2 = topRadius, $fn = resolution);
@@ -36,8 +36,37 @@ module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulum
         }
     //}
    }
-
-   }
+   
+   
+ //////////////////////////////
+   
+   translate([0,0,holeSpaceing]){
+   
+   intersection(){
+       difference(){
+        translate([0,0,0])
+        cylinder(h = height, r1 = bottomRadius, r2 = topRadius, $fn = resolution);
+        translate([0,0,-roundingError/2])
+        cylinder(h = height + roundingError , r1 = bottomRadius - wallThickness, r2 = topRadius - wallThickness, $fn = resolution);
+       }     
+    
+        
+        //resize([10,7,height], auto = true){
+        for (stack = [height/2:-holeSpaceing:-holeSpaceing]){
+            echo(stack);
+            x = stack + stack ; 
+            
+            
+            translate([-bottomRadius/1.5,-holeWidth* coulumGap, x ])
+            cube([(bottomRadius + topRadius)/1.3, holeWidth,holeHeight ], center = true);
+            
+            translate([-bottomRadius/1.5,holeWidth*coulumGap, x - holeSpaceing])
+            cube([(bottomRadius+ topRadius)/1.3, holeWidth,holeHeight], center = true);
+        }
+    //}
+   
+    }
+}
         
 }
 //union(){
