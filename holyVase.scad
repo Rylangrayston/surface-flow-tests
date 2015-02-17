@@ -10,6 +10,8 @@ segmentSize = holeSpaceing * 10 * scaleFactor;
 
 roundingError  = .04;
 
+wallThickness = .05;
+
 module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulumGap = 1, wallThickness  = .05, bottomRadius = 10, topRadius = 9
 ){
     holeWidth = (bottomRadius+ topRadius)/6;
@@ -36,6 +38,21 @@ module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulum
         }
     //}
    }
+   
+   
+ //////////////////////////////
+   
+
+        
+}
+
+
+
+module coulumHoleFill(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulumGap = 1, wallThickness  = .05, bottomRadius = 10, topRadius = 9
+){
+    holeWidth = (bottomRadius+ topRadius)/6;
+    
+
    
    
  //////////////////////////////
@@ -69,21 +86,40 @@ module coulum(height = segmentSize , holeSpaceing = .3, holeHeight = .35, coulum
 }
         
 }
-//union(){
+
+
+
+
+union(){
 
 
 
    
-points = [4,4,1,1.8,3,6,12,15,16,16,15,13,8,4,2,1,1];  
+points = [4,4,1,1.5,3,7,12,15,16,15,13,8,4,2,1,1];  
 
 for (i = [0:1:len(points) -2]) {
-   translate([0,0,segmentSize  * i  ])
-   coulum(bottomRadius = points[i] * scaleFactor, topRadius = points[i +1] * scaleFactor, holeSpaceing = holeSpaceing, holeHeight = holeHeight );
+   translate([0,0,segmentSize  * i]){
+   coulum(bottomRadius = points[i] * scaleFactor, topRadius = points[i +1] * scaleFactor, holeSpaceing = holeSpaceing, holeHeight = holeHeight, wallThickness = wallThickness );
     //echo(i);
+       
+if (points[i] >= points[i + 1] ) { 
+        translate([wallThickness*2,0,0])
+   coulumHoleFill(bottomRadius = points[i] * scaleFactor, topRadius = points[i +1] * scaleFactor, holeSpaceing = holeSpaceing, holeHeight = holeHeight, wallThickness = wallThickness );
+    
+    }
+    
+if (points[i] < points[i + 1] ) { 
+        translate([-wallThickness*2,0,0])
+   coulumHoleFill(bottomRadius = points[i] * scaleFactor, topRadius = points[i +1] * scaleFactor, holeSpaceing = holeSpaceing, holeHeight = holeHeight, wallThickness = wallThickness );
+    
+    }
+    
+    
+   }       
 }
     
    
-//}
+}
 
 
 
